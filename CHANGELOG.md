@@ -10,8 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - `bytes/2` and `number/2` now carry up to the next unit when rounding would
-  otherwise produce a mantissa of `1000` (e.g. `999_950` → `"1.0 MB"` instead of
-  `"1000.0 KB"`, `999_999` → `"1.0M"` instead of `"1000.0K"`).
+  otherwise produce a mantissa equal to the base (`1000` for decimal/SI, `1024`
+  for binary/IEC) — e.g. `999_950` → `"1.0 MB"` instead of `"1000.0 KB"`,
+  `999_999` → `"1.0M"` instead of `"1000.0K"`. Binary units correctly keep
+  mantissas in the `1000`–`1023` range (e.g. `1023` GiB stays GiB, since it is
+  still under 1 TiB).
 
 ## [0.1.0] - 2026-05-31
 
