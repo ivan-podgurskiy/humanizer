@@ -25,6 +25,12 @@ defmodule HumanizerTest do
       assert Humanizer.bytes(2_456_789, precision: 0) == "2 MB"
     end
 
+    test "rounding carries up to the next unit instead of '1000.0 KB'" do
+      assert Humanizer.bytes(999_950) == "1.0 MB"
+      assert Humanizer.bytes(999_999_999) == "1.0 GB"
+      assert Humanizer.bytes(999_950, precision: 0) == "1 MB"
+    end
+
     test "binary system uses IEC suffixes" do
       assert Humanizer.bytes(2_456_789, system: :binary) == "2.3 MiB"
     end
@@ -117,6 +123,11 @@ defmodule HumanizerTest do
 
     test "trillions are the ceiling in v0.1" do
       assert Humanizer.number(10 ** 12) == "1.0T"
+    end
+
+    test "rounding carries up to the next suffix instead of '1000.0K'" do
+      assert Humanizer.number(999_999) == "1.0M"
+      assert Humanizer.number(999_999_999) == "1.0B"
     end
   end
 

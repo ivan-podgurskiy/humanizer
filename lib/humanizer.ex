@@ -86,8 +86,9 @@ defmodule Humanizer do
         "#{n} B"
 
       true ->
-        index = scale_index(n, base, max_index)
-        value = n / pow_int(base, index)
+        {value, index} =
+          scale_with_carry(n, base, scale_index(n, base, max_index), max_index, precision)
+
         "#{format_scaled(value, precision)} #{Enum.at(suffixes, index)}"
     end
   end
@@ -127,12 +128,13 @@ defmodule Humanizer do
     sign = if n < 0, do: "-", else: ""
     abs_n = abs(n)
     max_index = length(@number_suffixes) - 1
-    index = scale_index(abs_n, 1000, max_index)
+
+    {value, index} =
+      scale_with_carry(abs_n, 1000, scale_index(abs_n, 1000, max_index), max_index, precision)
 
     if index == 0 do
       sign <> Integer.to_string(round_half_away(abs_n))
     else
-      value = abs_n / pow_int(1000, index)
       sign <> format_scaled(value, precision) <> Enum.at(@number_suffixes, index)
     end
   end
@@ -365,6 +367,24 @@ defmodule Humanizer do
     Enum.reduce_while(1..max, 0, fn i, _acc ->
       if value >= pow_int(base, i), do: {:cont, i}, else: {:halt, i - 1}
     end)
+  end
+
+  # Returns `{value, index}` for the chosen magnitude, advancing to the next unit
+  # when rounding at the requested precision would carry the mantissa up to `base`
+  # (e.g. 999_950 bytes rounds to "1.0 MB", not "1000.0 KB").
+  defp scale_with_carry(n, base, index, max_index, precision) do
+    value = n / pow_int(base, index)
+
+    if index < max_index and rounds_to_base?(value, base, precision) do
+      scale_with_carry(n, base, index + 1, max_index, precision)
+    else
+      {value, index}
+    end
+  end
+
+  defp rounds_to_base?(value, base, precision) do
+    scale = pow_int(10, precision)
+    round_half_away(value * scale) >= base * scale
   end
 
   defp pow_int(_base, 0), do: 1
