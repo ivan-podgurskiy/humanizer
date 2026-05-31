@@ -1,23 +1,23 @@
-defmodule MyPackage.MixProject do
+defmodule Humanizer.MixProject do
   use Mix.Project
 
   @version "0.1.0"
-  @source_url "https://github.com/ivan-podgurskiy/hex-skeleton"
+  @source_url "https://github.com/ivan-podgurskiy/humanizer"
 
   def project do
     [
-      app: :my_package,
+      app: :humanizer,
       version: @version,
       elixir: "~> 1.18",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
 
-      # Hex (optional metadata if you ever publish)
+      # Hex
       description: description(),
       package: package(),
 
       # Docs
-      name: "MyPackage",
+      name: "Humanizer",
       source_url: @source_url,
       docs: docs(),
 
@@ -44,7 +44,8 @@ defmodule MyPackage.MixProject do
   end
 
   defp description do
-    "Replace with a one-line description of your internal library."
+    "Human-friendly formatting for Elixir: bytes, durations, relative time, " <>
+      "large numbers, ordinals and list joins. English-only, zero config."
   end
 
   defp package do
@@ -57,7 +58,7 @@ defmodule MyPackage.MixProject do
 
   defp docs do
     [
-      main: "MyPackage",
+      main: "Humanizer",
       source_ref: "v#{@version}",
       source_url: @source_url,
       extras: ["README.md", "CHANGELOG.md"]
