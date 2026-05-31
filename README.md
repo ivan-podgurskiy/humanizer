@@ -1,7 +1,7 @@
 # Humanizer
 
 [![CI](https://github.com/ivan-podgurskiy/humanizer/actions/workflows/ci.yml/badge.svg)](https://github.com/ivan-podgurskiy/humanizer/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/ivan-podgurskiy/humanizer/blob/main/LICENSE)
 
 Human-friendly formatting for Elixir. One flat module of pure functions that turn
 raw values into the strings you actually show to people — file sizes, durations,
@@ -21,6 +21,8 @@ def deps do
   ]
 end
 ```
+
+Documentation is on [HexDocs](https://hexdocs.pm/humanizer).
 
 ## Quick start
 
@@ -93,4 +95,4 @@ dependencies with one, _if English output is enough for you_.
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
+MIT. See [LICENSE](https://github.com/ivan-podgurskiy/humanizer/blob/main/LICENSE).
