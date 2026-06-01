@@ -50,7 +50,7 @@ defmodule Humanizer.MixProject do
 
   defp package do
     [
-      files: ~w(lib .formatter.exs mix.exs README.md LICENSE CHANGELOG.md),
+      files: ~w(lib .formatter.exs mix.exs README.md ROADMAP.md LICENSE CHANGELOG.md),
       licenses: ["MIT"],
       links: %{"GitHub" => @source_url}
     ]
@@ -61,7 +61,7 @@ defmodule Humanizer.MixProject do
       main: "Humanizer",
       source_ref: "v#{@version}",
       source_url: @source_url,
-      extras: ["README.md", "CHANGELOG.md"]
+      extras: ["README.md", "ROADMAP.md", "CHANGELOG.md"]
     ]
   end
 end

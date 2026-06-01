@@ -93,6 +93,12 @@ dependencies with one, _if English output is enough for you_.
 | Full number/date localization (CLDR) | [`ex_cldr`](https://hex.pm/packages/ex_cldr) + `ex_cldr_numbers` |
 | Parsing human time back into values | [`chronic`](https://hex.pm/packages/chronic) |
 
+## Roadmap
+
+Planned work for upcoming releases (thousands separators, string truncation,
+list limits, richer relative time, and an optional localization layer) is tracked
+in [ROADMAP.md](ROADMAP.md).
+
 ## License
 
 MIT. See [LICENSE](https://github.com/ivan-podgurskiy/humanizer/blob/main/LICENSE).
