@@ -5,7 +5,8 @@
 
 Human-friendly formatting for Elixir. One flat module of pure functions that turn
 raw values into the strings you actually show to people — file sizes, durations,
-relative time, large numbers, ordinals and list enumerations.
+relative time, large numbers, thousands separators, ordinals, string truncation
+and list enumerations.
 
 English-only, zero configuration, no global state. Replaces a handful of
 single-purpose dependencies (`filesize`, `humanize_time`, ad-hoc helpers) with one.
@@ -17,7 +18,7 @@ Add `humanizer` to your `mix.exs`:
 ```elixir
 def deps do
   [
-    {:humanizer, "~> 0.1.0"}
+    {:humanizer, "~> 0.2.0"}
   ]
 end
 ```
@@ -39,15 +40,24 @@ Humanizer.duration(45, format: :short)
 
 Humanizer.relative_time(~U[2026-05-13 10:00:00Z], ~U[2026-05-15 10:00:00Z])
 # => "2 days ago"
+Humanizer.relative_time(~U[2026-05-13 10:00:00Z], ~U[2026-05-15 10:00:00Z], format: :short)
+# => "2d ago"
 
 Humanizer.number(1_234_567)
 # => "1.2M"
+Humanizer.delimit(1_234_567)
+# => "1,234,567"
 
 Humanizer.ordinal(23)
 # => "23rd"
 
+Humanizer.truncate("the quick brown fox", 9)
+# => "the quic…"
+
 Humanizer.list_join(["Alice", "Bob", "Charlie"])
 # => "Alice, Bob and Charlie"
+Humanizer.list_join(["Alice", "Bob", "Charlie", "Dave", "Eve"], max: 2)
+# => "Alice, Bob and 3 others"
 ```
 
 Every function takes its options as a keyword list — there is no `Application` env
@@ -61,7 +71,9 @@ and nothing to configure globally.
 | `duration/2` | `Humanizer.duration(3725)` | `"1 hour, 2 minutes"` |
 | `relative_time/2,3` | `Humanizer.relative_time(past, now)` | `"2 days ago"` |
 | `number/2` | `Humanizer.number(1_234_567)` | `"1.2M"` |
+| `delimit/2` | `Humanizer.delimit(1_234_567)` | `"1,234,567"` |
 | `ordinal/1` | `Humanizer.ordinal(23)` | `"23rd"` |
+| `truncate/3` | `Humanizer.truncate("the quick brown fox", 9)` | `"the quic…"` |
 | `list_join/2` | `Humanizer.list_join(["a", "b", "c"])` | `"a, b and c"` |
 
 Numbers use one consistent rule: round-half-away-from-zero with a single fractional
@@ -95,8 +107,8 @@ dependencies with one, _if English output is enough for you_.
 
 ## Roadmap
 
-Planned work for upcoming releases (thousands separators, string truncation,
-list limits, richer relative time, and an optional localization layer) is tracked
+v0.2.0 added thousands separators, string truncation, list limits and richer
+relative time. Remaining planned work (an optional localization layer) is tracked
 in [ROADMAP.md](ROADMAP.md).
 
 ## License

@@ -25,4 +25,16 @@ defmodule HumanizerPropertyTest do
       refute result =~ ~r/[eE]/
     end
   end
+
+  # An optional leading "-", then digits grouped in threes by commas: the first
+  # group is 1..3 digits, every following group is exactly 3.
+  @delimit_pattern ~r/^-?\d{1,3}(,\d{3})*$/
+
+  property "delimit/2 groups integers in threes without scientific notation" do
+    check all(n <- integer(-(10 ** 15)..(10 ** 15)), max_runs: 500) do
+      result = Humanizer.delimit(n)
+      assert result =~ @delimit_pattern
+      refute result =~ ~r/[eE]/
+    end
+  end
 end

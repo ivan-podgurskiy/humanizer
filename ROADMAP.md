@@ -24,25 +24,26 @@ Guiding constraints (unchanged from v0.1):
       `999_999` → `"1.0M"`).
 - [x] Tighten the `bytes/2` property test to reject a `1000.x` mantissa.
 
-## v0.2.0 — fill the obvious English gaps (additive, backward-compatible)
+## v0.2.0 — fill the obvious English gaps (additive, backward-compatible) (released)
 
 The most-requested category functions that need zero i18n and fit the existing
 philosophy. Ordered by priority.
 
-- [ ] **`delimit/2`** — thousands separator: `1_234_567` → `"1,234,567"`.
+- [x] **`delimit/2`** — thousands separator: `1_234_567` → `"1,234,567"`.
       The single most common "humanize" helper still missing. Options:
       `:separator` (default `","`), `:precision` for floats. Highest priority.
-- [ ] **`truncate/3`** — string truncation with an ellipsis and an optional
+- [x] **`truncate/3`** — string truncation with an ellipsis and an optional
       word boundary: `truncate("the quick brown fox", 9)` → `"the quic…"`.
       Options: `:omission` (default `"…"`), `:break` (`:char` | `:word`).
-- [ ] **`list_join/2` `:max` option** — collapse long lists:
+- [x] **`list_join/2` `:max` option** — collapse long lists:
       `list_join(names, max: 2)` → `"Alice, Bob and 3 others"`.
       Option for the trailing noun (`:other` / `:others`).
-- [ ] **`relative_time` improvements** — weeks / months / years approximations
-      beyond the current day ceiling, a `:format` option (`:short` → `"2d ago"`),
-      and finer near-now granularity (`"a moment ago"`). Months/years here are
-      coarse approximations for display only, distinct from the deliberately
-      omitted calendar math in `duration/2`.
+- [x] **`relative_time` improvements** — weeks / months / years approximations
+      beyond the current day ceiling and a `:format` option (`:short` → `"2d ago"`).
+      Months/years here are coarse approximations for display only, distinct from
+      the deliberately omitted calendar math in `duration/2`. Finer near-now
+      granularity (`"a moment ago"`) was deferred: the sub-minute window stays
+      `"just now"` to keep v0.1 output backward-compatible.
 
 Candidates pending demand (do not build speculatively):
 

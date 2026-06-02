@@ -131,6 +131,82 @@ defmodule HumanizerTest do
     end
   end
 
+  describe "delimit/2 edge cases" do
+    test "zero is '0' with no separator or decimals" do
+      assert Humanizer.delimit(0) == "0"
+    end
+
+    test "values below 1000 are unchanged" do
+      assert Humanizer.delimit(999) == "999"
+    end
+
+    test "groups integers in threes" do
+      assert Humanizer.delimit(1_234_567) == "1,234,567"
+      assert Humanizer.delimit(1000) == "1,000"
+    end
+
+    test "negative numbers keep the sign outside the grouping" do
+      assert Humanizer.delimit(-1_234_567) == "-1,234,567"
+    end
+
+    test "custom separator" do
+      assert Humanizer.delimit(1_234_567, separator: " ") == "1 234 567"
+      assert Humanizer.delimit(1_234_567, separator: ".") == "1.234.567"
+    end
+
+    test "floats keep their natural decimals by default" do
+      assert Humanizer.delimit(1234.5) == "1,234.5"
+    end
+
+    test "precision forces a fixed number of fractional digits" do
+      assert Humanizer.delimit(1234.5, precision: 2) == "1,234.50"
+      assert Humanizer.delimit(1000, precision: 2) == "1,000.00"
+    end
+
+    test "precision: 0 rounds with no trailing dot" do
+      assert Humanizer.delimit(1234.5, precision: 0) == "1,235"
+    end
+
+    test "large integers never use scientific notation" do
+      assert Humanizer.delimit(1_000_000_000_000) == "1,000,000,000,000"
+    end
+  end
+
+  describe "truncate/3 edge cases" do
+    test "strings shorter than the limit are returned unchanged" do
+      assert Humanizer.truncate("hi there", 20) == "hi there"
+    end
+
+    test "strings exactly at the limit are returned unchanged" do
+      assert Humanizer.truncate("123456789", 9) == "123456789"
+    end
+
+    test "char break cuts mid-word and counts the omission" do
+      assert Humanizer.truncate("the quick brown fox", 9) == "the quic…"
+      assert String.length("the quic…") == 9
+    end
+
+    test "word break backs up to the previous whitespace boundary" do
+      assert Humanizer.truncate("the quick brown fox", 9, break: :word) == "the…"
+    end
+
+    test "word break with no whitespace falls back to a hard cut" do
+      assert Humanizer.truncate("supercalifragilistic", 9, break: :word) == "supercal…"
+    end
+
+    test "custom omission marker" do
+      assert Humanizer.truncate("the quick brown fox", 12, omission: "...") == "the quick..."
+    end
+
+    test "limit smaller than the omission still appends the omission" do
+      assert Humanizer.truncate("hello world", 3, omission: "...") == "..."
+    end
+
+    test "is grapheme-aware for multibyte input" do
+      assert Humanizer.truncate("héllo wörld", 6) == "héllo…"
+    end
+  end
+
   describe "ordinal/1 edge cases" do
     test "11, 12, 13 always take 'th'" do
       assert Humanizer.ordinal(11) == "11th"
@@ -186,6 +262,53 @@ defmodule HumanizerTest do
     test "custom conjunctions" do
       assert Humanizer.list_join(["a", "b", "c"], conjunction: "or") == "a, b or c"
       assert Humanizer.list_join(["a", "b", "c"], conjunction: "&") == "a, b & c"
+    end
+
+    test "max collapses the overflow into a count" do
+      assert Humanizer.list_join(["Alice", "Bob", "Charlie", "Dave", "Eve"], max: 2) ==
+               "Alice, Bob and 3 others"
+    end
+
+    test "max uses the singular noun when exactly one item is hidden" do
+      assert Humanizer.list_join(["a", "b", "c"], max: 2) == "a, b and 1 other"
+    end
+
+    test "max has no effect when the list is not longer than max" do
+      assert Humanizer.list_join(["a", "b"], max: 5) == "a and b"
+      assert Humanizer.list_join(["a", "b", "c"], max: 3) == "a, b and c"
+    end
+
+    test "max respects oxford comma and custom nouns" do
+      assert Humanizer.list_join(["a", "b", "c", "d"], max: 2, oxford: true) ==
+               "a, b, and 2 others"
+
+      assert Humanizer.list_join(["a", "b", "c"], max: 1, others: "more") == "a and 2 more"
+    end
+  end
+
+  describe "relative_time/3 wider units and short format" do
+    test "weeks, months and years are coarse approximations" do
+      now = ~U[2026-05-15 10:00:00Z]
+      assert Humanizer.relative_time(~U[2026-05-01 10:00:00Z], now) == "2 weeks ago"
+      assert Humanizer.relative_time(~U[2026-04-01 10:00:00Z], now) == "1 month ago"
+      assert Humanizer.relative_time(~U[2025-05-15 10:00:00Z], now) == "1 year ago"
+    end
+
+    test "short format compacts the unit but keeps the direction" do
+      now = ~U[2026-05-15 10:00:00Z]
+      assert Humanizer.relative_time(~U[2026-05-13 10:00:00Z], now, format: :short) == "2d ago"
+      assert Humanizer.relative_time(~U[2026-05-15 13:00:00Z], now, format: :short) == "in 3h"
+    end
+
+    test "short format uses 'now' under a minute" do
+      now = ~U[2026-05-15 10:00:00Z]
+      assert Humanizer.relative_time(~U[2026-05-15 09:59:40Z], now, format: :short) == "now"
+    end
+
+    test "short format disambiguates minutes (m) from months (mo)" do
+      now = ~U[2026-05-15 10:00:00Z]
+      assert Humanizer.relative_time(~U[2026-05-15 09:55:00Z], now, format: :short) == "5m ago"
+      assert Humanizer.relative_time(~U[2026-04-01 10:00:00Z], now, format: :short) == "1mo ago"
     end
   end
 end

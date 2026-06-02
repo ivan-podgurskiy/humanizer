@@ -1,7 +1,7 @@
 defmodule Humanizer.MixProject do
   use Mix.Project
 
-  @version "0.1.1"
+  @version "0.2.0"
   @source_url "https://github.com/ivan-podgurskiy/humanizer"
 
   def project do
@@ -45,7 +45,8 @@ defmodule Humanizer.MixProject do
 
   defp description do
     "Human-friendly formatting for Elixir: bytes, durations, relative time, " <>
-      "large numbers, ordinals and list joins. English-only, zero config."
+      "large numbers, thousands separators, ordinals, string truncation and " <>
+      "list joins. English-only, zero config."
   end
 
   defp package do

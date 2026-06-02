@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-06-02
+
+### Added
+
+- `delimit/2` — thousands separator (`1_234_567` → `"1,234,567"`), with
+  `:separator` and `:precision` options. Integer-built, never scientific notation.
+- `truncate/3` — string truncation with an ellipsis (`:omission`) and an optional
+  word boundary (`:break` `:char` | `:word`). Grapheme-aware.
+- `list_join/2` `:max` option — collapse long lists into a count
+  (`max: 2` → `"Alice, Bob and 3 others"`), with `:other` / `:others` nouns.
+
+### Changed
+
+- `relative_time/2,3` now supports a `:format` option (`:short` → `"2d ago"`,
+  `"in 3h"`, `"now"`) and extends past days to weeks, months and years. Months and
+  years are coarse fixed-width approximations (30 / 365 days) for display only.
+  Default (`:long`) output is unchanged for all previously supported ranges.
+
 ## [0.1.1] - 2026-05-31
 
 ### Fixed
@@ -31,5 +49,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   custom conjunction.
 - English-only, zero-config, scientific-notation-free formatting throughout.
 
+[0.2.0]: https://github.com/ivan-podgurskiy/humanizer/releases/tag/v0.2.0
 [0.1.1]: https://github.com/ivan-podgurskiy/humanizer/releases/tag/v0.1.1
 [0.1.0]: https://github.com/ivan-podgurskiy/humanizer/releases/tag/v0.1.0
