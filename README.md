@@ -1,5 +1,7 @@
 # Humanizer
 
+[![Hex.pm](https://img.shields.io/hexpm/v/humanizer.svg)](https://hex.pm/packages/humanizer)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-blueviolet.svg)](https://hexdocs.pm/humanizer)
 [![CI](https://github.com/ivan-podgurskiy/humanizer/actions/workflows/ci.yml/badge.svg)](https://github.com/ivan-podgurskiy/humanizer/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/ivan-podgurskiy/humanizer/blob/main/LICENSE)
 
@@ -82,7 +84,7 @@ notation, for any input up to `10 ** 15`.
 
 ## Localization
 
-**English only in v0.1.** This is deliberate. Real localization means pluralization,
+**English only.** This is deliberate. Real localization means pluralization,
 gender, grammatical cases and locale-specific decimal separators — a single `bytes/1`
 under locales is a project of its own.
 
