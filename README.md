@@ -7,8 +7,8 @@
 
 Human-friendly formatting for Elixir. One flat module of pure functions that turn
 raw values into the strings you actually show to people — file sizes, durations,
-relative time, large numbers, thousands separators, ordinals, string truncation
-and list enumerations.
+relative time, large numbers, percentages, thousands separators, ordinals, string
+truncation and list enumerations.
 
 English-only, zero configuration, no global state. Replaces a handful of
 single-purpose dependencies (`filesize`, `humanize_time`, ad-hoc helpers) with one.
@@ -20,7 +20,7 @@ Add `humanizer` to your `mix.exs`:
 ```elixir
 def deps do
   [
-    {:humanizer, "~> 0.2.0"}
+    {:humanizer, "~> 0.3.0"}
   ]
 end
 ```
@@ -47,6 +47,8 @@ Humanizer.relative_time(~U[2026-05-13 10:00:00Z], ~U[2026-05-15 10:00:00Z], form
 
 Humanizer.number(1_234_567)
 # => "1.2M"
+Humanizer.percentage(0.1234)
+# => "12.3%"
 Humanizer.delimit(1_234_567)
 # => "1,234,567"
 
@@ -73,13 +75,15 @@ and nothing to configure globally.
 | `duration/2` | `Humanizer.duration(3725)` | `"1 hour, 2 minutes"` |
 | `relative_time/2,3` | `Humanizer.relative_time(past, now)` | `"2 days ago"` |
 | `number/2` | `Humanizer.number(1_234_567)` | `"1.2M"` |
+| `percentage/2` | `Humanizer.percentage(0.1234)` | `"12.3%"` |
 | `delimit/2` | `Humanizer.delimit(1_234_567)` | `"1,234,567"` |
 | `ordinal/1` | `Humanizer.ordinal(23)` | `"23rd"` |
 | `truncate/3` | `Humanizer.truncate("the quick brown fox", 9)` | `"the quic…"` |
 | `list_join/2` | `Humanizer.list_join(["a", "b", "c"])` | `"a, b and c"` |
 
 Numbers use one consistent rule: round-half-away-from-zero with a single fractional
-digit by default (override with `:precision`). Output is never in scientific
+digit by default (override with `:precision`). Percentages take ratios as input,
+so `1` renders as `"100.0%"`. Output is never in scientific
 notation, for any input up to `10 ** 15`.
 
 ## Localization
@@ -109,8 +113,7 @@ dependencies with one, _if English output is enough for you_.
 
 ## Roadmap
 
-v0.2.0 added thousands separators, string truncation, list limits and richer
-relative time. Remaining planned work (an optional localization layer) is tracked
+v0.3.0 added ratio-based percentage formatting. Remaining planned work is tracked
 in [ROADMAP.md](ROADMAP.md).
 
 ## License

@@ -10,6 +10,7 @@ defmodule Humanizer do
     * `relative_time/3` — a `DateTime` → `"2 days ago"`
     * `number/2` — `1_234_567` → `"1.2M"`
     * `delimit/2` — `1_234_567` → `"1,234,567"`
+    * `percentage/2` — `0.1234` → `"12.3%"`
     * `ordinal/1` — `23` → `"23rd"`
     * `truncate/3` — `"the quick brown fox", 9` → `"the quic…"`
     * `list_join/2` — `["Alice", "Bob", "Charlie"]` → `"Alice, Bob and Charlie"`
@@ -188,6 +189,37 @@ defmodule Humanizer do
     sign = if n < 0, do: "-", else: ""
     {int_str, frac_str} = delimit_parts(abs(n), precision)
     sign <> group_digits(int_str, separator) <> frac_str
+  end
+
+  @doc """
+  Formats a ratio as a percentage.
+
+  The input is a ratio, so `1` renders as `"100.0%"`. Precision defaults to one
+  fractional digit.
+
+  ## Options
+
+    * `:precision` — number of fractional digits (default `1`)
+
+  ## Examples
+
+      iex> Humanizer.percentage(0.1234)
+      "12.3%"
+
+      iex> Humanizer.percentage(1)
+      "100.0%"
+
+      iex> Humanizer.percentage(0.1234, precision: 2)
+      "12.34%"
+
+      iex> Humanizer.percentage(-0.125, precision: 0)
+      "-13%"
+
+  """
+  @spec percentage(number(), keyword()) :: String.t()
+  def percentage(n, opts \\ []) when is_number(n) do
+    precision = Keyword.get(opts, :precision, 1)
+    format_scaled(n * 100, precision) <> "%"
   end
 
   @doc """

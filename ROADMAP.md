@@ -45,12 +45,18 @@ philosophy. Ordered by priority.
       granularity (`"a moment ago"`) was deferred: the sub-minute window stays
       `"just now"` to keep v0.1 output backward-compatible.
 
+## v0.3.0 — percentage formatting (additive, backward-compatible) (released)
+
+- [x] **`percentage/2`** — ratio-based percentage formatting:
+      `0.1234` → `"12.3%"`, `1` → `"100.0%"`. Options:
+      `:precision` (default `1`). Uses the same round-half-away-from-zero rule
+      as the existing numeric helpers.
+
 Candidates pending demand (do not build speculatively):
 
-- `percentage/2` — `0.1234` → `"12.3%"`.
 - `ordinal_words/1` — `3` → `"third"` (small, but starts down the word-form path).
 
-## v0.3.0 — localization layer (only if v0.1/v0.2 see real adoption)
+## v0.4.0 — localization layer (only if earlier releases see real adoption)
 
 English stays the zero-dependency default. Localization arrives as an
 **optional** layer, never a hard dependency.

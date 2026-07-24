@@ -172,6 +172,29 @@ defmodule HumanizerTest do
     end
   end
 
+  describe "percentage/2 edge cases" do
+    test "formats a ratio as a percentage" do
+      assert Humanizer.percentage(0.1234) == "12.3%"
+    end
+
+    test "one ratio is one hundred percent" do
+      assert Humanizer.percentage(1) == "100.0%"
+    end
+
+    test "precision controls the number of fractional digits" do
+      assert Humanizer.percentage(0.1234, precision: 0) == "12%"
+      assert Humanizer.percentage(0.1234, precision: 2) == "12.34%"
+    end
+
+    test "negative ratios keep the sign and round half away from zero" do
+      assert Humanizer.percentage(-0.125, precision: 0) == "-13%"
+    end
+
+    test "large percentages never use scientific notation" do
+      assert Humanizer.percentage(10 ** 12) == "100000000000000.0%"
+    end
+  end
+
   describe "truncate/3 edge cases" do
     test "strings shorter than the limit are returned unchanged" do
       assert Humanizer.truncate("hi there", 20) == "hi there"
