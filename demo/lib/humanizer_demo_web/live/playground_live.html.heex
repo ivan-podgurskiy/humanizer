@@ -1,0 +1,214 @@
+<a class="skip-link" href="#main-content">Skip to playground</a>
+<nav class="site-nav" aria-label="Primary navigation">
+  <div class="site-nav__inner">
+    <a class="wordmark" href="#top" aria-label="Humanizer home">
+      <span class="wordmark__mark" aria-hidden="true">H</span>
+      <span>Humanizer</span>
+      <small>EX</small>
+    </a>
+    <div class="site-nav__links">
+      <a href="#playground">Playground</a>
+      <a href="https://hexdocs.pm/humanizer" rel="noreferrer">Docs</a>
+      <a href="https://github.com/ivan-podgurskiy/humanizer" rel="noreferrer">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main-content">
+  <section id="top" class="hero shell" aria-labelledby="hero-title">
+    <div class="hero__copy">
+      <p class="eyebrow">Human-friendly formatting for Elixir</p>
+      <h1 id="hero-title">Raw values in. <em>Clear language out.</em></h1>
+      <p class="hero__lede">Nine focused helpers. Zero configuration. Every example is live.</p>
+      <div class="hero__actions">
+        <a class="button button--primary" href="#playground">Explore the playground</a>
+        <a class="button button--quiet" href="https://hexdocs.pm/humanizer">Read the docs</a>
+      </div>
+      <div class="install-command">
+        <span>mix.exs</span>
+        <code id="install-snippet">{"{:humanizer, \"~> 0.3.0\"}"}</code>
+        <button
+          id="copy-install"
+          type="button"
+          phx-hook="CopyCode"
+          data-copy-target="install-snippet"
+          aria-label="Copy installation dependency"
+        >
+          Copy
+        </button>
+      </div>
+    </div>
+
+    <div class="hero-lab" aria-label="Live bytes example">
+      <div class="hero-lab__topline">
+        <span>LIVE / bytes/2</span>
+        <span class="hero-lab__status"><i aria-hidden="true"></i> Connected</span>
+      </div>
+      <form id="hero-bytes-form" phx-change="change">
+        <input type="hidden" name="formatter" value="bytes" />
+        <input type="hidden" name="params[system]" value={@cards.bytes.params["system"]} />
+        <input type="hidden" name="params[precision]" value={@cards.bytes.params["precision"]} />
+        <label for="hero-bytes-value">Byte count</label>
+        <input
+          id="hero-bytes-value"
+          name="params[value]"
+          value={@cards.bytes.params["value"]}
+          inputmode="numeric"
+          aria-invalid={if(@cards.bytes.errors["value"], do: "true", else: "false")}
+          aria-describedby={if(@cards.bytes.errors["value"], do: "hero-bytes-value-error")}
+          phx-debounce="180"
+        />
+        <p
+          :if={@cards.bytes.errors["value"]}
+          id="hero-bytes-value-error"
+          class="field-error"
+          role="alert"
+        >
+          {@cards.bytes.errors["value"]}
+        </p>
+      </form>
+      <div class="hero-lab__result">
+        <span>Humanizer says</span>
+        <strong>{@cards.bytes.output || "—"}</strong>
+      </div>
+      <code>{@cards.bytes.code}</code>
+    </div>
+  </section>
+
+  <section class="principles shell" aria-label="Library principles">
+    <div><strong>09</strong><span>focused helpers</span></div>
+    <div><strong>00</strong><span>global configuration</span></div>
+    <div><strong>∞</strong><span>composable calls</span></div>
+    <div><strong>EN</strong><span>deliberately English</span></div>
+  </section>
+
+  <section id="playground" class="playground shell" aria-labelledby="playground-title">
+    <header class="section-heading">
+      <p class="eyebrow">Interactive playground</p>
+      <h2 id="playground-title">Size</h2>
+    </header>
+    <div class="formatter-grid">
+      <HumanizerDemoWeb.PlaygroundComponents.formatter_card
+        id={:bytes}
+        title="File size"
+        signature="bytes/2"
+        description="Turn byte counts into decimal or binary units."
+        state={@cards.bytes}
+        presets={HumanizerDemo.Playground.Catalog.presets(:bytes)}
+        class="formatter-card--wide"
+      />
+    </div>
+
+    <header class="section-heading">
+      <p class="eyebrow">Compact and precise</p>
+      <h2>Numbers</h2>
+    </header>
+    <div class="formatter-grid">
+      <HumanizerDemoWeb.PlaygroundComponents.formatter_card
+        id={:number}
+        title="Magnitude"
+        signature="number/2"
+        description="Make large numbers glanceable with K, M, B, and T suffixes."
+        state={@cards.number}
+        presets={HumanizerDemo.Playground.Catalog.presets(:number)}
+      />
+      <HumanizerDemoWeb.PlaygroundComponents.formatter_card
+        id={:percentage}
+        title="Percentage"
+        signature="percentage/2"
+        description="Format ratios as percentages with consistent rounding."
+        state={@cards.percentage}
+        presets={HumanizerDemo.Playground.Catalog.presets(:percentage)}
+      />
+      <HumanizerDemoWeb.PlaygroundComponents.formatter_card
+        id={:delimit}
+        title="Thousands"
+        signature="delimit/2"
+        description="Group digits with a custom separator and optional fixed precision."
+        state={@cards.delimit}
+        presets={HumanizerDemo.Playground.Catalog.presets(:delimit)}
+        class="formatter-card--wide"
+      />
+      <HumanizerDemoWeb.PlaygroundComponents.formatter_card
+        id={:ordinal}
+        title="Ordinal"
+        signature="ordinal/1"
+        description="Add the correct English ordinal suffix, including teen exceptions."
+        state={@cards.ordinal}
+        presets={HumanizerDemo.Playground.Catalog.presets(:ordinal)}
+        class="formatter-card--compact"
+      />
+    </div>
+
+    <header class="section-heading">
+      <p class="eyebrow">Seconds to sentences</p>
+      <h2>Time</h2>
+    </header>
+    <div class="formatter-grid">
+      <HumanizerDemoWeb.PlaygroundComponents.formatter_card
+        id={:duration}
+        title="Duration"
+        signature="duration/2"
+        description="Break seconds into the most meaningful time units."
+        state={@cards.duration}
+        presets={HumanizerDemo.Playground.Catalog.presets(:duration)}
+        class="formatter-card--compact"
+      />
+      <HumanizerDemoWeb.PlaygroundComponents.formatter_card
+        id={:relative_time}
+        title="Relative time"
+        signature="relative_time/2,3"
+        description="Describe a UTC instant against an explicit reference."
+        state={@cards.relative_time}
+        presets={HumanizerDemo.Playground.Catalog.presets(:relative_time)}
+        class="formatter-card--wide"
+      />
+    </div>
+
+    <header class="section-heading">
+      <p class="eyebrow">Copy that reads naturally</p>
+      <h2>Text &amp; Lists</h2>
+    </header>
+    <div class="formatter-grid">
+      <HumanizerDemoWeb.PlaygroundComponents.formatter_card
+        id={:truncate}
+        title="Truncate"
+        signature="truncate/3"
+        description="Shorten Unicode text by character or word boundary."
+        state={@cards.truncate}
+        presets={HumanizerDemo.Playground.Catalog.presets(:truncate)}
+        class="formatter-card--compact"
+      />
+      <HumanizerDemoWeb.PlaygroundComponents.formatter_card
+        id={:list_join}
+        title="List join"
+        signature="list_join/2"
+        description="Turn lists into natural English enumerations."
+        state={@cards.list_join}
+        presets={HumanizerDemo.Playground.Catalog.presets(:list_join)}
+        class="formatter-card--wide"
+      />
+    </div>
+  </section>
+
+  <section class="closing shell" aria-labelledby="closing-title">
+    <div>
+      <p class="eyebrow">A deliberately small contract</p>
+      <h2 id="closing-title">Small functions.<br /><em>Noticeably better interfaces.</em></h2>
+    </div>
+    <div class="closing__copy">
+      <p>
+        English-only. Pure functions. No global configuration. Humanizer formats values but does not parse formatted text, and stays intentionally smaller than a full CLDR solution.
+      </p>
+      <div>
+        <a href="https://hex.pm/packages/humanizer">View on Hex</a>
+        <a href="https://github.com/ivan-podgurskiy/humanizer">Browse the source</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer shell">
+  <span>Humanizer v0.3.0</span>
+  <span>Built with Elixir + Phoenix LiveView</span>
+</footer>

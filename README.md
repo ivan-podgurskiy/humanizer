@@ -67,6 +67,22 @@ Humanizer.list_join(["Alice", "Bob", "Charlie", "Dave", "Eve"], max: 2)
 Every function takes its options as a keyword list — there is no `Application` env
 and nothing to configure globally.
 
+## Interactive demo
+
+The committed [`demo/`](demo/) project is a standalone Phoenix LiveView
+playground for all nine Humanizer functions and every documented option. It runs
+against the checked-out library through a path dependency, includes curated edge
+case presets, and supports production releases and Docker deployment.
+
+```sh
+cd demo
+mix setup
+mix phx.server
+```
+
+The root Hex package uses an explicit file allowlist, so the demo application is
+committed with the repository but excluded from published package archives.
+
 ## API
 
 | Function | Example | Result |
