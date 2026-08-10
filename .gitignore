@@ -25,3 +25,7 @@ humanizer-*.tar
 # Dialyzer PLT files
 /priv/plts/*.plt
 /priv/plts/*.plt.hash
+
+# Local agent artifacts and isolated worktrees.
+/.superpowers/
+/.worktrees/

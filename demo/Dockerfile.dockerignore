@@ -1,0 +1,17 @@
+.git
+.worktrees
+.superpowers
+.elixir_ls
+cover
+doc
+priv/plts
+**/_build
+**/deps
+**/cover
+**/tmp
+**/.elixir_ls
+**/erl_crash.dump
+**/*.ez
+demo/assets/node_modules
+demo/priv/static/assets
+demo/priv/static/cache_manifest.json

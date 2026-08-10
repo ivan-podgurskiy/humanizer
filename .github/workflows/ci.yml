@@ -56,3 +56,48 @@ jobs:
 
       - if: matrix.lint
         run: mix dialyzer --format github
+
+      - if: matrix.lint
+        run: mix hex.build --unpack --output /tmp/humanizer-package
+
+      - if: matrix.lint
+        name: Verify the Hex package excludes the demo
+        run: test ! -e /tmp/humanizer-package/demo
+
+  demo:
+    runs-on: ubuntu-latest
+    name: Phoenix LiveView demo
+    defaults:
+      run:
+        working-directory: demo
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: erlef/setup-beam@v1
+        with:
+          elixir-version: "1.18"
+          otp-version: "27"
+
+      - uses: actions/cache@v6
+        with:
+          path: |
+            demo/deps
+            demo/_build
+          key: ${{ runner.os }}-demo-otp27-elixir1.18-${{ hashFiles('demo/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-demo-otp27-elixir1.18-
+
+      - run: mix deps.get
+      - run: mix format --check-formatted
+      - run: mix compile --warnings-as-errors
+      - run: mix test
+      - run: MIX_ENV=prod mix assets.deploy
+      - run: MIX_ENV=prod mix release
+
+  demo-container:
+    runs-on: ubuntu-latest
+    name: Phoenix demo container
+    needs: demo
+    steps:
+      - uses: actions/checkout@v7
+      - run: docker build -f demo/Dockerfile -t humanizer-demo .
