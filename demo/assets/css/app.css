@@ -748,14 +748,14 @@ pre {
   margin-top: 20px;
   padding: 20px;
   border-radius: 12px;
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--code);
+  color: var(--code-ink);
   flex-direction: column;
   justify-content: space-between;
 }
 
 .result-panel__label {
-  color: color-mix(in srgb, var(--paper) 62%, transparent);
+  color: color-mix(in srgb, var(--code-ink) 62%, transparent);
   font-family: var(--mono);
   font-size: 0.58rem;
   letter-spacing: 0.11em;

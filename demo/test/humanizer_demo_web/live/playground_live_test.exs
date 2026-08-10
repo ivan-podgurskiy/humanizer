@@ -3,6 +3,13 @@ defmodule HumanizerDemoWeb.PlaygroundLiveTest do
 
   import Phoenix.LiveViewTest
 
+  test "output panels use the theme-stable code surface" do
+    css = File.read!(Path.expand("../../../assets/css/app.css", __DIR__))
+
+    assert css =~
+             ~r/\.result-panel\s*\{[^}]*background:\s*var\(--code\);/s
+  end
+
   test "renders the showcase and every formatter", %{conn: conn} do
     {:ok, view, _html} = live(conn, ~p"/")
 

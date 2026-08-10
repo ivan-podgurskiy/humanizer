@@ -255,7 +255,9 @@ The visual language is editorial rather than dashboard-like:
 The implementation follows `prefers-color-scheme` for a complete dark
 appearance. It does not add a theme toggle because theme persistence is outside
 the stateless demo's purpose. No font or UI framework CDN is required at
-runtime.
+runtime. Output panels keep the same near-black code surface in both system
+themes, with lime reserved for the formatted value, so the dark appearance never
+inverts them to green text on a white background.
 
 The layout must work without horizontal scrolling at 320 CSS pixels and retain
 a deliberate hierarchy on wide desktop displays.
