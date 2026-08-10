@@ -63,7 +63,7 @@ defmodule HumanizerDemo.MixProject do
       setup: ["deps.get", "assets.setup", "assets.build"],
       "assets.setup": ["esbuild.install --if-missing"],
       "assets.build": ["compile", "esbuild humanizer_demo"],
-      "assets.deploy": ["esbuild humanizer_demo --minify", "phx.digest"],
+      "assets.deploy": ["compile", "esbuild humanizer_demo --minify", "phx.digest"],
       precommit: ["compile --warnings-as-errors", "deps.unlock --unused", "format", "test"]
     ]
   end
