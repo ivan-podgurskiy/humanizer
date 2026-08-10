@@ -166,7 +166,7 @@ pre {
   height: 32px;
   place-items: center;
   border-radius: 9px;
-  background: var(--ink);
+  background: var(--panel-strong);
   color: var(--lime);
   font-family: var(--mono);
   font-size: 0.84rem;

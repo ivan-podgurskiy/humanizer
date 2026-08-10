@@ -23,6 +23,14 @@ defmodule HumanizerDemoWeb.PlaygroundLiveTest do
     end
   end
 
+  test "describes zero global configuration with a single zero", %{conn: conn} do
+    {:ok, view, _html} = live(conn, ~p"/")
+
+    assert view
+           |> element(".principles div:nth-child(2) strong")
+           |> render() == "<strong>0</strong>"
+  end
+
   test "one card changes without replacing another card result", %{conn: conn} do
     {:ok, view, _html} = live(conn, ~p"/")
     duration_before = view |> element("#result-duration") |> render()
