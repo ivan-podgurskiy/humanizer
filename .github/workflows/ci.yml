@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   ci:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.runner }}
     name: Elixir ${{ matrix.elixir }} / OTP ${{ matrix.otp }}
     strategy:
       fail-fast: false
@@ -19,11 +19,14 @@ jobs:
         include:
           - elixir: "1.18"
             otp: "27"
+            runner: ubuntu-latest
             lint: true
           - elixir: "1.18"
             otp: "26"
+            runner: ubuntu-latest
           - elixir: "1.18"
             otp: "25"
+            runner: ubuntu-24.04
     env:
       MIX_ENV: test
     steps:
@@ -40,9 +43,9 @@ jobs:
             deps
             _build
             priv/plts
-          key: ${{ runner.os }}-otp${{ matrix.otp }}-elixir${{ matrix.elixir }}-${{ hashFiles('**/mix.lock') }}
+          key: ${{ matrix.runner }}-otp${{ matrix.otp }}-elixir${{ matrix.elixir }}-${{ hashFiles('**/mix.lock') }}
           restore-keys: |
-            ${{ runner.os }}-otp${{ matrix.otp }}-elixir${{ matrix.elixir }}-
+            ${{ matrix.runner }}-otp${{ matrix.otp }}-elixir${{ matrix.elixir }}-
 
       - run: mix deps.get
       - run: mix compile --warnings-as-errors
